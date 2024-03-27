@@ -1,3 +1,4 @@
+import 'package:d_scan/screen/home/drawer.dart';
 import 'package:d_scan/screen/home/sectionGrid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +16,7 @@ class HomePage extends StatelessWidget {
     String bgImage = "assets/photo/bgimage.jpg";
 
     return Scaffold(
-      drawer: Drawer(),
+      drawer: AppDrawer(),
       appBar: AppBar(
         backgroundColor: HomeColors.appBarbgColor,
         title: Text(

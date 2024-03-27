@@ -3,6 +3,7 @@ import 'package:d_scan/login_signin/login/log_in_page.dart';
 import 'package:d_scan/utils/colors/homepage_color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../screen/home/homepage.dart';
 
@@ -23,7 +24,6 @@ class AuthenticationWrapper extends StatelessWidget {
           );
         } else {
           if (snapshot.hasData) {
-            // User is authenticated
             return FutureBuilder<DocumentSnapshot>(
               future:
                   _firestore.collection('users').doc(snapshot.data!.uid).get(),
@@ -41,13 +41,27 @@ class AuthenticationWrapper extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width,
-                        color: HomeColors.bgColor,
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      )
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          color: HomeColors.bgColor,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/main_logo.png',
+                                height: 150.h,
+                                width: 150.h,
+                              ),
+                              Text(
+                                "D SCAN HOSPITAL",
+                                style: TextStyle(
+                                    color: HomeColors.textColors,
+                                    fontSize: 24.sp,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ))
                     ],
                   ));
                 } else {

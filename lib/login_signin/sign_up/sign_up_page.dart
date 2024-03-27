@@ -1,4 +1,3 @@
-import 'package:d_scan/login_signin/login/log_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../utils/colors/homepage_color.dart';
+import '../login/log_in_page.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -17,40 +17,52 @@ class _SignUpPageState extends State<SignUpPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  late String _email;
-  late String _password;
   late String _name;
   late String _address;
-  late String _mobileNumber;
-  bool visiblepassword = true;
-  void _signUp() async {
+  late String _phoneNumber;
+  late String _email;
+  late String _password;
+
+  bool _obscurePassword = true;
+
+  // void _togglePasswordVisibility() {
+  //   setState(() {
+  //     _obscurePassword = !_obscurePassword;
+  //   });
+  // }
+
+  Future<void> _signUp() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        UserCredential userCredential =
+        final UserCredential userCredential =
             await _auth.createUserWithEmailAndPassword(
           email: _email,
           password: _password,
         );
 
-        // Store user data in Firestore under their UID
-        await _firestore.collection('users').doc(userCredential.user!.uid).set({
-          'name': _name,
-          'address': _address,
-          'mobileNumber': _mobileNumber,
-          'password': _password,
-          'email': _email
-        });
-        Get.to(SignInPage());
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Sign up successful!'),
-          ),
-        );
+        final User? user = userCredential.user;
+        if (user != null) {
+          await _firestore.collection('users').doc(user.uid).set({
+            'name': _name,
+            'address': _address,
+            'phoneNumber': _phoneNumber,
+            'email': _email,
+            'password':_password
+          }).then((value) => Get.to(SignInPage()));
+
+          Get.to(SignInPage());
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Sign up successful!'),
+            ),
+          );
+        }
       } catch (e) {
+        print('Error signing up: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to sign up: $e'),
+            content: Text('Failed to sign up. Please try again later.'),
           ),
         );
       }
@@ -155,7 +167,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 color: HomeColors.textColors,
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w400),
-                            onSaved: (value) => _mobileNumber = value!,
+                            onSaved: (value) => _phoneNumber = value!,
                             decoration: InputDecoration(
                               hintText: 'মোবাইল নাম্বার লিখুন',
                               border: OutlineInputBorder(
@@ -211,17 +223,17 @@ class _SignUpPageState extends State<SignUpPage> {
                                 suffixIcon: IconButton(
                                     onPressed: () {
                                       setState(() {
-                                        if (visiblepassword == true) {
-                                          visiblepassword = false;
+                                        if (_obscurePassword == true) {
+                                          _obscurePassword = false;
                                         } else {
-                                          visiblepassword = true;
+                                          _obscurePassword = true;
                                         }
                                       });
                                     },
-                                    icon: visiblepassword == true
+                                    icon: _obscurePassword == true
                                         ? Icon(Icons.visibility_off)
                                         : Icon(Icons.visibility))),
-                            obscureText: visiblepassword,
+                            obscureText: _obscurePassword,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'পাসওয়ার্ড দিন';

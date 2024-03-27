@@ -1,136 +1,19 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:d_scan/utils/colors/homepage_color.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:get/get.dart';
+// The error message indicates that there's an issue with the format of the phone number being provided for SMS verification. It seems the format is not in the expected E.164 format.
 
-// import 'screen/home/homepage.dart';
+// E.164 phone numbers are written in the format: [+][country code][subscriber number including area code].
 
-// class CustomExpansionTile extends StatefulWidget {
-//   final String title;
-//   final String subtitle;
+// Here's how you can solve this error:
 
-//   CustomExpansionTile({required this.title, required this.subtitle});
+// Ensure Correct Phone Number Format: Make sure that the phone number being provided for verification is in the correct format. It should include the country code and the subscriber number, following the E.164 format.
 
-//   @override
-//   _CustomExpansionTileState createState() => _CustomExpansionTileState();
-// }
+// Validate User Input: Implement input validation on the client side to ensure that users are entering phone numbers in the correct format. You can use libraries or custom validation functions to enforce this.
 
-// class _CustomExpansionTileState extends State<CustomExpansionTile> {
-//   bool _isExpanded = false;
+// Handle Error Messages: Provide clear error messages to users when the phone number format is incorrect. This will help users understand what went wrong and how to fix it.
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       color: HomeColors.sectionColor,
-//       child: ExpansionTile(
-//         title: Text(
-//           widget.title,
-//           style: TextStyle(
-//               fontSize: 18.sp,
-//               color: Colors.black,
-//               fontWeight: FontWeight.bold),
-//         ),
-//         trailing: Icon(
-//             _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down),
-//         onExpansionChanged: (value) {
-//           setState(() {
-//             _isExpanded = value;
-//           });
-//         },
-//         children: <Widget>[
-//           ListTile(
-//             title: Text(
-//               widget.subtitle,
-//               style: TextStyle(
-//                   fontSize: 14.sp,
-//                   color: Colors.black,
-//                   fontWeight: FontWeight.w600),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+// Check Backend Configuration: Ensure that your backend configurations for Firebase authentication, especially regarding phone number authentication, are correctly set up. Double-check any settings related to phone number formatting and validation.
 
-// class Servises extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     Size size = MediaQuery.of(context).size;
-//     String bgImage = "assets/photo/bgimage.jpg";
-//     return Scaffold(
-//         backgroundColor: HomeColors.bgColor,
-//         appBar: AppBar(
-//           backgroundColor: HomeColors.appBarbgColor,
-//           actions: [
-//             TextButton(
-//               onPressed: () {
-//                 Get.to(HomePage());
-//               },
-//               child: Text(
-//                 "হোম",
-//                 style: TextStyle(
-//                   fontSize: 20.sp,
-//                   fontWeight: FontWeight.bold,
-//                   color: Colors.white,
-//                 ),
-//               ),
-//             ),
-//           ],
-//           title: Text(
-//             "আমাদের সেবা",
-//             style: TextStyle(
-//               fontSize: 21.sp,
-//               fontWeight: FontWeight.bold,
-//               color: HomeColors.appbarTextcolor,
-//             ),
-//           ),
-//           leading: GestureDetector(
-//             onTap: () {
-//               Get.back();
-//             },
-//             child: Container(
-//               padding: EdgeInsets.all(14),
-//               child: Image.asset(
-//                 "assets/icon/arrowback.png",
-//               ),
-//             ),
-//           ),
-//         ),
-//         body: Stack(children: [
-//           Image.asset(
-//             bgImage,
-//             height: size.height,
-//             width: size.width,
-//             fit: BoxFit.cover,
-//           ),
-//           Container(
-//             height: size.height,
-//             width: size.width,
-//             color: HomeColors.myDoctorHomes,
-//             child: StreamBuilder(
-//               stream:
-//                   FirebaseFirestore.instance.collection('service').snapshots(),
-//               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-//                 if (!snapshot.hasData) {
-//                   return CircularProgressIndicator();
-//                 } else {
-//                   return ListView(
-//                     children:
-//                         snapshot.data!.docs.map((DocumentSnapshot document) {
-//                       Map<String, dynamic> data =
-//                           document.data() as Map<String, dynamic>;
-//                       return CustomExpansionTile(
-//                         title: data['title'],
-//                         subtitle: data['subtitle'],
-//                       );
-//                     }).toList(),
-//                   );
-//                 }
-//               },
-//             ),
-//           )
-//         ]));
-//   }
-// }
+// Test with Different Phone Numbers: Test your application with various phone numbers from different countries to ensure that the phone number validation works correctly for all cases.
+
+// Check Firebase Console: Review the settings in your Firebase console related to phone authentication and ensure they match your application requirements.
+
+// By addressing these points, you should be able to resolve the error related to incorrect phone number format during SMS verification.

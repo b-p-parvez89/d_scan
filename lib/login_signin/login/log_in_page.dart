@@ -1,5 +1,4 @@
 // ignore_for_file: unused_field, unused_local_variable
-
 import 'package:d_scan/screen/home/homepage.dart';
 import 'package:d_scan/utils/colors/homepage_color.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _mobileNumberController = TextEditingController();
+  final TextEditingController _emailCOntroller = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -26,26 +25,19 @@ class _SignInPageState extends State<SignInPage> {
   Future<void> _signIn() async {
     if (_formKey.currentState!.validate()) {
       try {
-        final UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _mobileNumberController.text
-              .trim(), // Use mobile number for sign-in
-          password: _passwordController.text.trim(),
-        );
-
-        final User? user = userCredential.user;
-
-        if (user != null) {
-          // Navigate to HomePage
-          Get.to(HomePage());
+        await _auth
+            .signInWithEmailAndPassword(
+                email: _emailCOntroller.text.trim(),
+                password: _passwordController.text.trim())
+            .then((value) => Get.to(HomePage()));
+        Get.to(HomePage());
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          print('user-not-found');
+        } else if (e.code == 'wrong-password') {
+          print('wrong password');
         }
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Incorrect Phone or Password'),
-          ),
-        );
-      }
+      } catch (e) {}
     }
   }
 
@@ -100,15 +92,15 @@ class _SignInPageState extends State<SignInPage> {
                                   color: HomeColors.textColors,
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.w400),
-                              controller: _mobileNumberController,
+                              controller: _emailCOntroller,
                               decoration: InputDecoration(
-                                  hintText: 'ইমেইল অথবা মোবাইল নাম্বার লিখুন',
+                                  hintText: 'ইমেইল লিখুন',
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(15))),
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'মোবাইল নাম্বার অথবা ইমেইল দিন';
+                                  return 'ইমেইল দিন';
                                 }
                                 return null;
                               },

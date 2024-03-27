@@ -35,7 +35,7 @@ class ImageSlider extends StatelessWidget {
         return CarouselSlider(
           options: CarouselOptions(
             autoPlay: true,
-            aspectRatio: 16 / 7.5,
+            aspectRatio: 16 / 8,
             enlargeCenterPage: true,
           ),
           items: imageUrls.map((url) {

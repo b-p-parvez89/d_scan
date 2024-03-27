@@ -114,7 +114,7 @@ class MYAddmishion extends StatelessWidget {
                             ),
                             SizedBox(height: 20),
                             Text(
-                              "আপনি এখন পর্যন্ত কোনো ভর্তি ক করেন নি!",
+                              "আপনি এখন পর্যন্ত কোনো ভর্তি করেন নি!",
                               style: TextStyle(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.bold,
@@ -123,7 +123,7 @@ class MYAddmishion extends StatelessWidget {
                             ),
                             SizedBox(height: 20),
                             Text(
-                              "অনুগ্রহ করে আগে ভর্তি সম্পুর্ন করুন।   ভর্তি করতে নিচের বাটন এ ক্লিক করুন অথবা হোম পেজে ফেরত জান",
+                              "অনুগ্রহ করে আগে ভর্তি সম্পুর্ন করুন। ভর্তি করতে নিচের বাটন এ ক্লিক করুন অথবা হোম পেজে ফেরত জান",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 16.sp,
